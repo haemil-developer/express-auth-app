@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const app = express();
 const secretText = 'secretText';
+const refreshSecretText = 'refreshSecretText';
 
 const posts = [
     {
@@ -14,6 +15,7 @@ const posts = [
         title: 'Hogwarts'
     }
 ]
+let refreshTokens = [];
 
 app.use(express.json());
 
@@ -22,7 +24,15 @@ app.post('/login', (req, res) => {
     const user = { name: username };
 
     // create token using jwt   payload + secretText
-    const accessToken = jwt.sign(user, secretText);
+    // add expiration date
+    const accessToken = jwt.sign(user, secretText, { expiresIn: '2h' });
+
+    // create refreshToken using jwt
+    const refreshToken = jwt.sign(user, refreshSecretText, { expiresIn: '1day' });
+    refreshTokens.push(refreshToken);   // usually using a database but in this project using memory store as simple
+
+    // set refreshToken in cookie
+    res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 })
     res.json({ accessToken: accessToken });
 })
 
