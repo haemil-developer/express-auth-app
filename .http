@@ -1,9 +1,14 @@
+# login
 POST http://localhost:3000/login
 Content-Type: application/json
 
 { "username": "Alice"}
 
 ###
+# refresh token
+GET http://localhost:3000/refresh
+
+###
 
 GET http://localhost:3000/posts
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQWxpY2UiLCJpYXQiOjE2OTM2NjU4NzZ9.lhLrNJsFl3sIKFK2wxr8lKjaXn_qAgvVM3JSjFXyBFI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQWxpY2UiLCJpYXQiOjE2OTM2NjgzMzcsImV4cCI6MTY5MzY2ODM2N30.hX3z_7TgaJ1p74iLzxc1WgeoiiLL2HgrGZpoe3UvY04
