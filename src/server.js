@@ -92,6 +92,12 @@ app.post('/login', (req, res, next) => {
     })(req, res, next)
 })
 
+app.get('/auth/google', passport.authenticate('google'));
+app.get('/auth/google/callback', passport.authenticate('google', {
+    successReturnToOrRedirect: '/',
+    failureRedirect: '/login'
+}));
+
 const port = 4000;
 app.listen(port, () => {
     console.log(`Listening on ${port}`);
