@@ -8,9 +8,11 @@ const User = require("./models/users.model");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
 
-const cookieEncryptionKey = ['key1', 'key2'];
+require('dotenv').config()
+
 app.use(cookieSession({
-    keys: cookieEncryptionKey
+    name: 'cookie-session-name',
+    keys: [process.env.COOKIE_ENCRYPTION_KEY]
 }));
 // register regenerate & save after the cookieSession middleware initialization
 app.use(function (request, response, next) {
@@ -38,7 +40,7 @@ app.use(express.urlencoded({ extended: false }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-mongoose.connect(`mongodb+srv://<user>:<password>@nestcluster.dsujn3u.mongodb.net/`)
+mongoose.connect(process.env.MONGO_URI)
     .then(() => {
         console.log(`mongodb connected successfully`);
     }).catch((error) => {
@@ -98,7 +100,10 @@ app.get('/auth/google/callback', passport.authenticate('google', {
     failureRedirect: '/login'
 }));
 
-const port = 4000;
-app.listen(port, () => {
-    console.log(`Listening on ${port}`);
+const config = require('config');
+const serverConfig = config.get('server');
+
+const PORT = serverConfig.port;
+app.listen(PORT, () => {
+    console.log(`Listening on ${PORT}`);
 })
