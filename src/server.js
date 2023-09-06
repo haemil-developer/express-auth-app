@@ -5,7 +5,7 @@ const path = require('path');
 
 const config = require('config');
 const mainRouter = require("./routes/main.router");
-const googleAuthRouter = require("./routes/google.auth.router");
+const googleAuthRouter = require("./routes/auth.router");
 const serverConfig = config.get('server');
 
 const PORT = serverConfig.port;
