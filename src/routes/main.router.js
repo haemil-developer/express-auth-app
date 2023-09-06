@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require("passport");
 const User = require("../models/users.model");
 const {checkAuthenticated, checkNotAuthenticated} = require("../middlewares/auth");
+const sendMail = require("../mail/mail");
 const mainRouter = express.Router();
 
 mainRouter.get('/', checkAuthenticated, (req, res) => {
@@ -29,8 +30,8 @@ mainRouter.post('/login', (req, res, next) => {
     })(req, res, next)
 })
 
-mainRouter.post('logout', (req,res, next) => {
-    res.logOut(function (err) {
+mainRouter.post('/logout', (req, res, next) => {
+    req.logOut(function (err) {
         if (err) { return next(err); }
         res.redirect('/login');
     })
@@ -43,6 +44,8 @@ mainRouter.post('/signup', async (req, res) => {
     // save it in User Collection
     try {
         await user.save();
+        // send welcome email
+        sendMail('receiver email', 'receiver name', 'welcome');
         return res.redirect('/login');
     } catch (e) {
         console.error(e);
